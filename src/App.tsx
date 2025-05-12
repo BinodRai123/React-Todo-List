@@ -1,4 +1,4 @@
-import { useState, type JSX } from "react";
+import { useEffect, useRef, useState, type JSX } from "react";
 
 type task = {
   title: string;
@@ -12,10 +12,15 @@ type TaskProps = {
 
 const App = () => {
   const [text, setText] = useState<string>("");
+  const inputRef = useRef<HTMLInputElement>(null);
   const [tasks, setTasks] = useState<task[]>([
     { title: "100 PushUps" },
     { title: "100 Setups" },
   ]);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  },[])
 
   const deleteTask = (id: number) => {
     setTasks(
@@ -43,13 +48,14 @@ const App = () => {
           >
             <input
               type="text"
+              ref={inputRef}
               onChange={(e) => setText(e.target.value)}
               value={text}
               placeholder="Add a new task..."
               className="flex-1 px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
             ></input>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition duration-200">
+            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-xl hover:bg-blue-600 transition duration-200">
               Add
             </button>
           </form>
